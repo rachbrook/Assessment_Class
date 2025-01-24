@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2025-01-24">
+
+<title>nwfscSurvey Package Data Extraction Tutorial</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="nwfscSurvey Package Data Extraction Tutorial_files/libs/clipboard/clipboard.min.js"></script>
+<script src="nwfscSurvey Package Data Extraction Tutorial_files/libs/quarto-html/quarto.js"></script>
+<script src="nwfscSurvey Package Data Extraction Tutorial_files/libs/quarto-html/popper.min.js"></script>
+<script src="nwfscSurvey Package Data Extraction Tutorial_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="nwfscSurvey Package Data Extraction Tutorial_files/libs/quarto-html/anchor.min.js"></script>
+<link href="nwfscSurvey Package Data Extraction Tutorial_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="nwfscSurvey Package Data Extraction Tutorial_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="nwfscSurvey Package Data Extraction Tutorial_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="nwfscSurvey Package Data Extraction Tutorial_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="nwfscSurvey Package Data Extraction Tutorial_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">nwfscSurvey Package Data Extraction Tutorial</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">January 24, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pak<span class="sc">::</span><span class="fu">pkg_install</span>(<span class="st">"pfmc-assessments/nwfscSurvey"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ Updated metadata database: 5.18 MB in 4 files.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ Updating metadata database</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ Updating metadata database ... done</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ No downloads are needed</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ 1 pkg + 93 deps: kept 88 [11.1s]</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">'dplyr'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'dplyr'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:stats':
+
+    filter, lag</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">'nwfscSurvey'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="nwfsc-west-coast-groundfish-bottom-trawl-survey-wcgbts-data" class="level1">
+<h1>NWFSC West Coast Groundfish Bottom Trawl Survey (WCGBTS) Data</h1>
+<section id="pull-survey-data" class="level2">
+<h2 class="anchored" data-anchor-id="pull-survey-data">Pull Survey Data</h2>
+<p>Pull survey catch and biological data for Yelloweye Rockfish from NWFSC data warehouse for initial data visualization</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>YEYE_catch <span class="ot">&lt;-</span> <span class="fu">pull_catch</span>(</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">common_name =</span> <span class="st">"yelloweye rockfish"</span>, <span class="co"># all lowercase </span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">survey =</span> <span class="st">"NWFSC.Combo"</span>,</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">dir =</span> <span class="st">"WCGBTS/YEYE-catch/"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ Pulling catch data for yelloweye rockfish.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>There are 374 positive tows across all years pulled.
+ℹ There were 42 positive tows with non-satisfactory tow performance (e.g., no area swept estimate, net issues, etc.).
+
+ℹ There were 1 positive tows from stations that have been removed from the standard station list.
+
+There are 331 positive tows remaining across all years after standard
+filtering.
+ℹ Catch data file saved to following location: WCGBTS/YEYE-catch/</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>YEYE_bio <span class="ot">=</span> <span class="fu">pull_bio</span>(</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">common_name =</span> <span class="st">"yelloweye rockfish"</span>, </span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">survey =</span> <span class="st">"NWFSC.Combo"</span>,</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>   <span class="at">dir =</span> <span class="st">"WCGBTS/YEYE-bio/"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ Pulling biological data for yelloweye rockfish.
+ℹ There were 1167 biological samples pulled.
+ℹ There were 117 biological samples with non-satisfactory tow performance (e.g., no area swept estimate, net issues, etc.).
+ℹ There were 1 biological samples from stations that have been removed from the standard station list.
+ℹ There were 1049 biological samples remaining after applying standard filtering.
+ℹ Bio data file saved to following location: WCGBTS/YEYE-bio/</code></pre>
+</div>
+</div>
+</section>
+<section id="initial-data-visualization" class="level2">
+<h2 class="anchored" data-anchor-id="initial-data-visualization">Initial Data Visualization</h2>
+<p>There is a range of functions to create visualizations of the data by examining catch rates by latitude or depth, lengths or ages by latitude and depth, presence/absence in tows, and observed sex ratios.</p>
+<p><a href="https://pfmc-assessments.github.io/nwfscSurvey/reference/plot_cpue.html"><strong><code>plot_cpue()</code></strong></a> <strong>This function plots cpue and length by latitude and depth</strong></p>
+<p><a href="https://pfmc-assessments.github.io/nwfscSurvey/reference/plot_bio_patterns.html"><strong><code>plot_bio_patterns()</code></strong></a><strong>This function plots length by latitude and depth</strong></p>
+<p><a href="https://pfmc-assessments.github.io/nwfscSurvey/reference/wh_plot_proportion.html"><strong><code>wh_plot_proportion()</code></strong></a> <strong>Save figures of proportions by depth and latitude using warehouse data</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_cpue</span>(</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">catch =</span> YEYE_catch,</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">dir =</span> <span class="st">"WCGBTS/exploratory-figures/"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'
+`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="nwfscSurvey-Package-Data-Extraction-Tutorial_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="960"></p>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'
+`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="nwfscSurvey-Package-Data-Extraction-Tutorial_files/figure-html/unnamed-chunk-3-2.png" class="img-fluid" width="960"></p>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'
+`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="nwfscSurvey-Package-Data-Extraction-Tutorial_files/figure-html/unnamed-chunk-3-3.png" class="img-fluid" width="960"></p>
+</div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_bio_patterns</span>(</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">bio =</span> YEYE_bio, </span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">col_name =</span> <span class="st">"Length_cm"</span>,</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">dir =</span> <span class="st">"WCGBTS/exploratory-figures/"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="nwfscSurvey-Package-Data-Extraction-Tutorial_files/figure-html/unnamed-chunk-3-4.png" class="img-fluid" width="960"></p>
+</div>
+<div class="cell-output-display">
+<p><img src="nwfscSurvey-Package-Data-Extraction-Tutorial_files/figure-html/unnamed-chunk-3-5.png" class="img-fluid" width="960"></p>
+</div>
+<div class="cell-output-display">
+<p><img src="nwfscSurvey-Package-Data-Extraction-Tutorial_files/figure-html/unnamed-chunk-3-6.png" class="img-fluid" width="960"></p>
+</div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wh_plot_proportion</span>(</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data_catch =</span> YEYE_catch,</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data_bio =</span> YEYE_bio,</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">dir =</span> <span class="st">"WCGBTS/exploratory-figures/plots/"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "WCGBTS/exploratory-figures/plots//presence-absence_by_depth.png"   
+[2] "WCGBTS/exploratory-figures/plots//presence-absence_by_latitude.png"
+[3] "WCGBTS/exploratory-figures/plots//sex_by_depth.png"                
+[4] "WCGBTS/exploratory-figures/plots//sex_by_latitude.png"             </code></pre>
+</div>
+</div>
+</section>
+<section id="index-of-abundance---define-strata" class="level2">
+<h2 class="anchored" data-anchor-id="index-of-abundance---define-strata">Index of Abundance - Define Strata</h2>
+<p>Define the stratification by depth and latitude that will be used to calculate a design-based index of abundance. Depth and latitude strata are required to calculate a design-based index of abundance as well as length and age compositions. The strata should be specific to the range where the species in question has been observed. Note that the WCGBT Survey sampling design has changes in sampling intensity at 183 and 549 meters and north and south of 34.5 degrees latitude, so these should generally be included as strata breaks if the range spans these values (the survey extends southward to about 32 degrees and as deep as 1280 m):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>WCGBTS_strata <span class="ot">&lt;-</span> <span class="fu">CreateStrataDF.fn</span>(</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">names =</span> <span class="fu">c</span>(<span class="st">"shallow_OR"</span>, <span class="st">"deep_OR"</span>, <span class="st">"shallow_WA"</span>, <span class="st">"deep_WA"</span>),</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">depths.shallow =</span> <span class="fu">c</span>( <span class="dv">55</span>, <span class="dv">183</span>, <span class="dv">55</span>, <span class="dv">183</span>),</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">depths.deep =</span> <span class="fu">c</span>( <span class="dv">183</span>, <span class="dv">350</span>, <span class="dv">183</span>, <span class="dv">350</span>),</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">lats.south =</span> <span class="fu">c</span>(<span class="dv">42</span>, <span class="dv">42</span>, <span class="dv">46</span>, <span class="dv">46</span>),</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">lats.north =</span> <span class="fu">c</span>( <span class="dv">46</span>, <span class="dv">46</span>, <span class="dv">49</span>, <span class="dv">49</span>)</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="design-based-index-of-abundance" class="level2">
+<h2 class="anchored" data-anchor-id="design-based-index-of-abundance">Design Based Index of Abundance</h2>
+<p>Calculate the design based indexx of abundance. <a href="https://pfmc-assessments.github.io/nwfscSurvey/reference/get_design_based.html"><code>get_design_based()</code></a>&nbsp;returns a list with elements&nbsp;<code>$biomass_by_strata</code>&nbsp;and&nbsp;<code>$biomass</code>, where the second element is the design based index of abundance aggregated across strata. If the&nbsp;<code>dir</code>&nbsp;function input is specified, the function writes a csv file inside the dir input location to a “forSS3” folder.</p>
+<ul>
+<li><p><strong>(Plot 1)</strong> Plot the coastwide design based index of abundance with uncertainty intervals</p></li>
+<li><p><strong>(Plot 2)</strong> Plots the design based index of abundance for each strata without uncertainty intervals</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>YEYE_biomass <span class="ot">&lt;-</span> <span class="fu">get_design_based</span>(</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">data =</span> YEYE_catch,  </span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">strata =</span> WCGBTS_strata)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ Output will not be saved in dir because dir = NULL.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Joining with `by = join_by(stratum)`</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_index</span>(</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> YEYE_biomass, </span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">plot =</span> <span class="dv">1</span>,</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">dir =</span> <span class="st">"WCGBTS/exploratory-figures/"</span>)</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_index</span>(</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> YEYE_biomass,</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">plot =</span> <span class="dv">2</span>,</span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">dir =</span> <span class="st">"WCGBTS/exploratory-figures/"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="length-composition-data" class="level2">
+<h2 class="anchored" data-anchor-id="length-composition-data">Length Composition Data</h2>
+<p><a href="https://pfmc-assessments.github.io/nwfscSurvey/reference/get_expanded_comps.html"><code>get_expanded_comps()</code></a>&nbsp;calculates and formats the length-composition data for Stock Synthesis - distribution by year and length bin. YEYE_length_comps calculates the length frequencies for use in SS and writes the files inside the ’forSS3” folder. The input sample size is calculated based on the Stewart and Hamel approach (e.g., unique samples calculated as a function of species type and tows).</p>
+<p>Can also calculate the raw or un-expanded composition data of length data using <em>get_raw_comps()</em>. This function returns a list of sexed and unsexed length composition data formatted for SS. The input sample size is set equal to the number of samples in the dataframe.</p>
+<p><em><strong>2017 Yelloweye Assessment:</strong> Length composition data were stratified into 33 2-cm bins, ranging between 10 and 74 cm.</em></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Calculate and format length composition data</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>YEYE_length_comps <span class="ot">&lt;-</span> <span class="fu">get_expanded_comps</span>(</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">bio_data =</span> YEYE_bio,</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">catch_data =</span> YEYE_catch,</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">comp_bins =</span> <span class="fu">seq</span>(<span class="dv">10</span>, <span class="dv">74</span>, <span class="dv">2</span>),</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">strata =</span> WCGBTS_strata,</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">comp_column_name =</span> <span class="st">"Length_cm"</span>,</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">output =</span> <span class="st">"full_expansion_ss3_format"</span>,</span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">two_sex_comps =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">input_n_method =</span> <span class="st">"stewart_hamel"</span>,</span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">dir =</span> <span class="st">"WCGBTS/length_comps/"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ There are 0% of records that are less than the minimum composition bin. These
+  fish will be added to the minimum bin.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ There are 0% of records that are greater than the maximum composition bin.
+  These fish will be added to the maximum bin.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ There are 1 tows where fish were observed but not sampled.
+These tows comprise 0.4 percent of the total catch numbers.
+Only measured fished in the bio_data file are used for composition expansions.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ There were 165 biological samples removed out of 1049 after filtering for strata.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Joining with `by = join_by(year, bin)`
+Sample size will be calculated based on stewart_hamel.
+The unique samples by tow for shelfrock is 2.43.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_comps</span>(</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> YEYE_length_comps,</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">dir =</span> <span class="st">"WCGBTS/length_comps/"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: No shared levels found between `names(values)` of the manual scale and the
+data's fill values.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Calculate raw and unexpanded length composition data</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>YEYE_raw_length_comps <span class="ot">&lt;-</span> <span class="fu">get_raw_comps</span>(</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> YEYE_bio,</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">comp_bins =</span> <span class="fu">seq</span>(<span class="dv">10</span>, <span class="dv">74</span>, <span class="dv">2</span>),</span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">comp_column_name =</span> <span class="st">"Length_cm"</span>,</span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">two_sex_comps =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">dir =</span> <span class="st">"WCGBTS/raw_length_comps/"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Sample size will be calculated based on stewart_hamel.
+The unique samples by tow for shelfrock is 2.43.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_comps</span>(</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> YEYE_raw_length_comps,</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">dir =</span> <span class="st">"WCGBTS/raw_length_comps/"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: No shared levels found between `names(values)` of the manual scale and the
+data's fill values.</code></pre>
+</div>
+</div>
+</section>
+<section id="marginal-age-composition-data" class="level2">
+<h2 class="anchored" data-anchor-id="marginal-age-composition-data">Marginal Age Composition Data</h2>
+<p><em>get_expanded_comps()</em> calculates and formats the age-composition data for Stock Synthesis (SS). YEYE_age_comps calculates the age frequencies for use in SS and writes the files inside the ’forSS3” folder. The input sample size is calculated based on the Stewart and Hamel approach (e.g., unique samples calculated as a function of species type and tows).</p>
+<p>Can also calculate the raw or un-expanded composition data of age data using <em>get_raw_comps()</em>. This function returns a list of sexed and unsexed age composition data formatted for SS. The input sample size is set equal to the number of samples in the dataframe.</p>
+<p><em><strong>2017 Yelloweye Assessment:</strong> Age composition data were stratified into 66 bins, ranging between age 0 and age 65. Age data beyond age 65 comprise less than 5% of all age data available for the assessment</em></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Calculate and format age composition data</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>YEYE_age_comps <span class="ot">&lt;-</span> <span class="fu">get_expanded_comps</span>(</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">bio_data =</span> YEYE_bio,</span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">catch_data =</span> YEYE_catch,</span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">comp_bins =</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">65</span>,</span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">strata =</span> WCGBTS_strata,</span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">comp_column_name =</span> <span class="st">"age"</span>,</span>
+<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">output =</span> <span class="st">"full_expansion_ss3_format"</span>,</span>
+<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">two_sex_comps =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">input_n_method =</span> <span class="st">"stewart_hamel"</span>,</span>
+<span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">dir =</span> <span class="st">"WCGBTS/age-comps/"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ There are 0% of records that are less than the minimum composition bin. These
+  fish will be added to the minimum bin.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ There are 2.2% of records that are greater than the maximum composition bin.
+  These fish will be added to the maximum bin.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ There are 133 tows where fish were observed but not sampled.
+These tows comprise 32.7 percent of the total catch numbers.
+Only measured fished in the bio_data file are used for composition expansions.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ There were 98 biological samples removed out of 683 after filtering for strata.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Joining with `by = join_by(year, bin)`
+Sample size will be calculated based on stewart_hamel.
+The unique samples by tow for shelfrock is 2.43.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_comps</span>(</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> YEYE_age_comps,</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">dir =</span> <span class="st">"WCGBTS/age-comps/"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: No shared levels found between `names(values)` of the manual scale and the
+data's fill values.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>YEYE_raw_age_comps <span class="ot">&lt;-</span> <span class="fu">get_raw_comps</span>(</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> YEYE_bio,</span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">comp_bins =</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">65</span>,</span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">comp_column_name =</span> <span class="st">"age"</span>,</span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">two_sex_comps =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">dir =</span> <span class="st">"WCGBTS/raw-age-comps/"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Sample size will be calculated based on stewart_hamel.
+The unique samples by tow for shelfrock is 2.43.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_comps</span>(</span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> YEYE_raw_age_comps,</span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">dir =</span> <span class="st">"WCGBTS/raw-age-comps/"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: No shared levels found between `names(values)` of the manual scale and the
+data's fill values.</code></pre>
+</div>
+</div>
+</section>
+<section id="conditional-age-at-length-data" class="level2">
+<h2 class="anchored" data-anchor-id="conditional-age-at-length-data">Conditional-Age-at-Length Data</h2>
+<p>Calculate conditional-age-at-length data formated for SS. Creates un-expanded conditional-age-at-length data for each sex with input sample sizes based on the observed number of fish in each length bin by year. It returns a list of 3 dataframes: “female”, “male”, and “unsexed”.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>caal <span class="ot">&lt;-</span> <span class="fu">SurveyAgeAtLen.fn</span>(</span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">datAL =</span> YEYE_bio, </span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">datTows =</span> YEYE_catch,</span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">strat.df =</span> WCGBTS_strata,</span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">lgthBins =</span> <span class="fu">seq</span>(<span class="dv">10</span>, <span class="dv">74</span>, <span class="dv">2</span>), </span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">ageBins =</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">65</span>,</span>
+<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">dir =</span> <span class="st">"WCGBTS/conditional-age-at-length/"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ There are 683 records kept out of 1049 records after removing missing records.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ Input sample size is based on number of fish.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ Using raw numbers of age-at-length</code></pre>
+</div>
+</div>
+</section>
+<section id="maps" class="level2">
+<h2 class="anchored" data-anchor-id="maps">Maps</h2>
+<p>Map showing the distribution of density in aggregate and by year</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">'maps'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'maps' was built under R version 4.4.2</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">'sf'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'sf' was built under R version 4.4.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Linking to GEOS 3.12.2, GDAL 3.9.3, PROJ 9.4.1; sf_use_s2() is TRUE</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">PlotMap.fn</span>(</span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">dat =</span> YEYE_catch,</span>
+<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">dir =</span> <span class="st">"WCGBTS/cpue-map/"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="nwfscSurvey-Package-Data-Extraction-Tutorial_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="960"></p>
+</div>
+<div class="cell-output-display">
+<p><img src="nwfscSurvey-Package-Data-Extraction-Tutorial_files/figure-html/unnamed-chunk-9-2.png" class="img-fluid" width="960"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="triennial-bottom-trawl-survey" class="level1">
+<h1>Triennial Bottom Trawl Survey</h1>
+<section id="pull-survey-data-1" class="level2">
+<h2 class="anchored" data-anchor-id="pull-survey-data-1">Pull Survey Data</h2>
+<p>Pull survey catch and biological data for Yelloweye Rockfish from NWFSC data warehouse for initial data visualization</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>T_YEYE_catch <span class="ot">=</span> <span class="fu">pull_catch</span>(</span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a><span class="at">common_name =</span> <span class="st">"yelloweye rockfish"</span>,</span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a><span class="at">survey =</span> <span class="st">"Triennial"</span>,</span>
+<span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a><span class="at">dir =</span> <span class="st">"Triennial/YEYE-catch/"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ Pulling catch data for yelloweye rockfish.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>There are 211 positive tows across all years pulled.
+ℹ There were 31 positive tows with non-satisfactory tow performance (e.g., no area swept estimate, net issues, etc.).
+
+ℹ There were 7 positive tows that were determined to be water hauls (net not on the bottom).
+
+There are 173 positive tows remaining across all years after standard
+filtering.
+ℹ Catch data file saved to following location: Triennial/YEYE-catch/</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>T_YEYE_bio <span class="ot">=</span> <span class="fu">pull_bio</span>(</span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a><span class="at">common_name =</span> <span class="st">"yelloweye rockfish"</span>,</span>
+<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a><span class="at">survey =</span> <span class="st">"Triennial"</span>,</span>
+<span id="cb70-4"><a href="#cb70-4" aria-hidden="true" tabindex="-1"></a><span class="at">dir =</span> <span class="st">"Triennial/YEYE-bio/"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ Pulling biological data for yelloweye rockfish.
+ℹ There were 152 age/otolith samples pulled.
+ℹ There were 36 age/otolith samples with non-satisfactory tow performance (e.g., no area swept estimate, net issues, etc.).
+ℹ There were 224 length samples pulled.
+ℹ There were 27 length samples with non-satisfactory tow performance (e.g., no area swept estimate, net issues, etc.).
+ℹ Triennial &amp; AFSC Slope data returned as a list: bio$length_data and bio$age_data
+ℹ There were 197 lengths and 116 ages samples remaining after applying standard filtering.
+ℹ Bio data file saved to following location: Triennial/YEYE-bio/</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>bioTtest <span class="ot">&lt;-</span> T_YEYE_bio<span class="sc">$</span>age_data <span class="co">#this is the same number of variables as bio from the WCGBTS</span></span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>T_YEYE_bio <span class="ot">&lt;-</span> bioTtest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="initial-data-visualization-1" class="level2">
+<h2 class="anchored" data-anchor-id="initial-data-visualization-1">Initial Data Visualization</h2>
+<p>There is a range of functions to create visualizations of the data by examining catch rates by latitude or depth, lengths or ages by latitude and depth, presence/absence in tows, and observed sex ratios.</p>
+<p><a href="https://pfmc-assessments.github.io/nwfscSurvey/reference/plot_cpue.html"><strong><code>plot_cpue()</code></strong></a> <strong>This function plots cpue and length by latitude and depth</strong></p>
+<p><a href="https://pfmc-assessments.github.io/nwfscSurvey/reference/plot_bio_patterns.html"><strong><code>plot_bio_patterns()</code></strong></a><strong>This function plots length by latitude and depth</strong></p>
+<p><a href="https://pfmc-assessments.github.io/nwfscSurvey/reference/wh_plot_proportion.html"><strong><code>wh_plot_proportion()</code></strong></a> <strong>Save figures of proportions by depth and latitude using warehouse data</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_cpue</span>(</span>
+<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">catch =</span> T_YEYE_catch,</span>
+<span id="cb73-3"><a href="#cb73-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">dir =</span> <span class="st">"Triennial/exploratory-figures/"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'
+`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="nwfscSurvey-Package-Data-Extraction-Tutorial_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="960"></p>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in max(ids, na.rm = TRUE): no non-missing arguments to max; returning
+-Inf</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in max(ids, na.rm = TRUE): no non-missing arguments to max; returning
+-Inf</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="nwfscSurvey-Package-Data-Extraction-Tutorial_files/figure-html/unnamed-chunk-11-2.png" class="img-fluid" width="960"></p>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in simpleLoess(y, x, w, span, degree = degree, parametric = parametric,
+: pseudoinverse used at 161.34</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in simpleLoess(y, x, w, span, degree = degree, parametric = parametric,
+: neighborhood radius 29.335</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in simpleLoess(y, x, w, span, degree = degree, parametric = parametric,
+: reciprocal condition number 4.907e-17</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in simpleLoess(y, x, w, span, degree = degree, parametric = parametric,
+: There are other near singularities as well. 841</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in predLoess(object$y, object$x, newx = if (is.null(newdata)) object$x
+else if (is.data.frame(newdata))
+as.matrix(model.frame(delete.response(terms(object)), : pseudoinverse used at
+161.34</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in predLoess(object$y, object$x, newx = if (is.null(newdata)) object$x
+else if (is.data.frame(newdata))
+as.matrix(model.frame(delete.response(terms(object)), : neighborhood radius
+29.335</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in predLoess(object$y, object$x, newx = if (is.null(newdata)) object$x
+else if (is.data.frame(newdata))
+as.matrix(model.frame(delete.response(terms(object)), : reciprocal condition
+number 4.907e-17</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in predLoess(object$y, object$x, newx = if (is.null(newdata)) object$x
+else if (is.data.frame(newdata))
+as.matrix(model.frame(delete.response(terms(object)), : There are other near
+singularities as well. 841</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in simpleLoess(y, x, w, span, degree = degree, parametric = parametric,
+: pseudoinverse used at 161.34</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in simpleLoess(y, x, w, span, degree = degree, parametric = parametric,
+: neighborhood radius 29.335</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in simpleLoess(y, x, w, span, degree = degree, parametric = parametric,
+: reciprocal condition number 4.907e-17</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in simpleLoess(y, x, w, span, degree = degree, parametric = parametric,
+: There are other near singularities as well. 841</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in predLoess(object$y, object$x, newx = if (is.null(newdata)) object$x
+else if (is.data.frame(newdata))
+as.matrix(model.frame(delete.response(terms(object)), : pseudoinverse used at
+161.34</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in predLoess(object$y, object$x, newx = if (is.null(newdata)) object$x
+else if (is.data.frame(newdata))
+as.matrix(model.frame(delete.response(terms(object)), : neighborhood radius
+29.335</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in predLoess(object$y, object$x, newx = if (is.null(newdata)) object$x
+else if (is.data.frame(newdata))
+as.matrix(model.frame(delete.response(terms(object)), : reciprocal condition
+number 4.907e-17</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in predLoess(object$y, object$x, newx = if (is.null(newdata)) object$x
+else if (is.data.frame(newdata))
+as.matrix(model.frame(delete.response(terms(object)), : There are other near
+singularities as well. 841</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="nwfscSurvey-Package-Data-Extraction-Tutorial_files/figure-html/unnamed-chunk-11-3.png" class="img-fluid" width="960"></p>
+</div>
+<div class="sourceCode cell-code" id="cb97"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_bio_patterns</span>(</span>
+<span id="cb97-2"><a href="#cb97-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">bio =</span> T_YEYE_bio, </span>
+<span id="cb97-3"><a href="#cb97-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">col_name =</span> <span class="st">"Length_cm"</span>,</span>
+<span id="cb97-4"><a href="#cb97-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">dir =</span> <span class="st">"Triennial/exploratory-figures/"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="nwfscSurvey-Package-Data-Extraction-Tutorial_files/figure-html/unnamed-chunk-11-4.png" class="img-fluid" width="960"></p>
+</div>
+<div class="cell-output-display">
+<p><img src="nwfscSurvey-Package-Data-Extraction-Tutorial_files/figure-html/unnamed-chunk-11-5.png" class="img-fluid" width="960"></p>
+</div>
+<div class="cell-output-display">
+<p><img src="nwfscSurvey-Package-Data-Extraction-Tutorial_files/figure-html/unnamed-chunk-11-6.png" class="img-fluid" width="960"></p>
+</div>
+<div class="sourceCode cell-code" id="cb98"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wh_plot_proportion</span>(</span>
+<span id="cb98-2"><a href="#cb98-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data_catch =</span> T_YEYE_catch,</span>
+<span id="cb98-3"><a href="#cb98-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data_bio =</span> T_YEYE_bio,</span>
+<span id="cb98-4"><a href="#cb98-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">dir =</span> <span class="st">"Triennial/exploratory-figures/plots/"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Triennial/exploratory-figures/plots//presence-absence_by_depth.png"   
+[2] "Triennial/exploratory-figures/plots//presence-absence_by_latitude.png"
+[3] "Triennial/exploratory-figures/plots//sex_by_depth.png"                
+[4] "Triennial/exploratory-figures/plots//sex_by_latitude.png"             </code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="index-of-abundance---define-strata-1" class="level1">
+<h1>Index of Abundance - Define Strata</h1>
+<p>Define the stratification by depth and latitude that will be used to calculate a design-based index of abundance. Depth and latitude strata are required to calculate a design-based index of abundance as well as length and age compositions. The strata should be specific to the range where the species in question has been observed. Strata delineation from Vladlena from 2017 YEYE assessment.<br>
+</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb100"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a>triennial_strata <span class="ot">=</span> <span class="fu">CreateStrataDF.fn</span>(<span class="at">names=</span><span class="fu">c</span>(<span class="st">"OR"</span>, <span class="st">"WA"</span>),</span>
+<span id="cb100-2"><a href="#cb100-2" aria-hidden="true" tabindex="-1"></a><span class="at">depths.shallow =</span> <span class="fu">c</span>(<span class="dv">55</span>, <span class="dv">55</span>),</span>
+<span id="cb100-3"><a href="#cb100-3" aria-hidden="true" tabindex="-1"></a><span class="at">depths.deep =</span> <span class="fu">c</span>(<span class="dv">350</span>, <span class="dv">350</span>),</span>
+<span id="cb100-4"><a href="#cb100-4" aria-hidden="true" tabindex="-1"></a><span class="at">lats.south =</span> <span class="fu">c</span>(<span class="dv">42</span>, <span class="dv">46</span>),</span>
+<span id="cb100-5"><a href="#cb100-5" aria-hidden="true" tabindex="-1"></a><span class="at">lats.north =</span> <span class="fu">c</span>(<span class="dv">46</span>, <span class="dv">49</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="design-based-index-of-abundance-1" class="level2">
+<h2 class="anchored" data-anchor-id="design-based-index-of-abundance-1">Design Based Index of Abundance</h2>
+<p>Calculate the design based indexx of abundance. <a href="https://pfmc-assessments.github.io/nwfscSurvey/reference/get_design_based.html"><code>get_design_based()</code></a>&nbsp;returns a list with elements&nbsp;<code>$biomass_by_strata</code>&nbsp;and&nbsp;<code>$biomass</code>, where the second element is the design based index of abundance aggregated across strata. If the&nbsp;<code>dir</code>&nbsp;function input is specified, the function writes a csv file inside the dir input location to a “forSS3” folder.</p>
+<ul>
+<li><p><strong>(Plot 1)</strong> Plot the coastwide design based index of abundance with uncertainty intervals</p></li>
+<li><p><strong>(Plot 2)</strong> Plots the design based index of abundance for each strata without uncertainty intervals</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb101"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a>T_YEYE_biomass <span class="ot">&lt;-</span> <span class="fu">get_design_based</span>(</span>
+<span id="cb101-2"><a href="#cb101-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">data =</span> T_YEYE_catch,  </span>
+<span id="cb101-3"><a href="#cb101-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">strata =</span> triennial_strata)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ Output will not be saved in dir because dir = NULL.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Joining with `by = join_by(stratum)`</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb104"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_index</span>(</span>
+<span id="cb104-2"><a href="#cb104-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> T_YEYE_biomass, </span>
+<span id="cb104-3"><a href="#cb104-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">plot =</span> <span class="dv">1</span>,</span>
+<span id="cb104-4"><a href="#cb104-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">dir =</span> <span class="st">"Triennial/exploratory-figures/"</span>)</span>
+<span id="cb104-5"><a href="#cb104-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb104-6"><a href="#cb104-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_index</span>(</span>
+<span id="cb104-7"><a href="#cb104-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> T_YEYE_biomass,</span>
+<span id="cb104-8"><a href="#cb104-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">plot =</span> <span class="dv">2</span>,</span>
+<span id="cb104-9"><a href="#cb104-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">dir =</span> <span class="st">"Triennial/exploratory-figures/"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="length-composition-data-1" class="level2">
+<h2 class="anchored" data-anchor-id="length-composition-data-1">Length Composition Data</h2>
+<p><a href="https://pfmc-assessments.github.io/nwfscSurvey/reference/get_expanded_comps.html"><code>get_expanded_comps()</code></a>&nbsp;calculates and formats the length-composition data for Stock Synthesis - distribution by year and length bin. YEYE_length_comps calculates the length frequencies for use in SS and writes the files inside the ’forSS3” folder. The input sample size is calculated based on the Stewart and Hamel approach (e.g., unique samples calculated as a function of species type and tows).</p>
+<p>Can also calculate the raw or un-expanded composition data of length data using <em>get_raw_comps()</em>. This function returns a list of sexed and unsexed length composition data formatted for SS. The input sample size is set equal to the number of samples in the dataframe.</p>
+<p><em><strong>2017 Yelloweye Assessment:</strong> Length composition data were stratified into 33 2-cm bins, ranging between 10 and 74 cm.</em></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb105"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb105-1"><a href="#cb105-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Calculate and format length composition data</span></span>
+<span id="cb105-2"><a href="#cb105-2" aria-hidden="true" tabindex="-1"></a>T_YEYE_length_comps <span class="ot">&lt;-</span> <span class="fu">get_expanded_comps</span>(</span>
+<span id="cb105-3"><a href="#cb105-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">bio_data =</span> T_YEYE_bio,</span>
+<span id="cb105-4"><a href="#cb105-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">catch_data =</span> T_YEYE_catch,</span>
+<span id="cb105-5"><a href="#cb105-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">comp_bins =</span> <span class="fu">seq</span>(<span class="dv">10</span>, <span class="dv">74</span>, <span class="dv">2</span>),</span>
+<span id="cb105-6"><a href="#cb105-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">strata =</span> triennial_strata,</span>
+<span id="cb105-7"><a href="#cb105-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">comp_column_name =</span> <span class="st">"Length_cm"</span>,</span>
+<span id="cb105-8"><a href="#cb105-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">output =</span> <span class="st">"full_expansion_ss3_format"</span>,</span>
+<span id="cb105-9"><a href="#cb105-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">two_sex_comps =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb105-10"><a href="#cb105-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">input_n_method =</span> <span class="st">"stewart_hamel"</span>,</span>
+<span id="cb105-11"><a href="#cb105-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">dir =</span> <span class="st">"Triennial/length_comps/"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ There are 0% of records that are less than the minimum composition bin. These
+  fish will be added to the minimum bin.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ There are 0% of records that are greater than the maximum composition bin.
+  These fish will be added to the maximum bin.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ There are 122 tows where fish were observed but not sampled.
+These tows comprise 77.4 percent of the total catch numbers.
+Only measured fished in the bio_data file are used for composition expansions.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ There were 7 biological samples removed out of 116 after filtering for strata.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Joining with `by = join_by(year, bin)`
+Sample size will be calculated based on stewart_hamel.
+The unique samples by tow for shelfrock is 2.43.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb111"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb111-1"><a href="#cb111-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_comps</span>(</span>
+<span id="cb111-2"><a href="#cb111-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> T_YEYE_length_comps,</span>
+<span id="cb111-3"><a href="#cb111-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">dir =</span> <span class="st">"Triennial/length_comps/"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: No shared levels found between `names(values)` of the manual scale and the
+data's fill values.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb113"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb113-1"><a href="#cb113-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Calculate raw and unexpanded length composition data</span></span>
+<span id="cb113-2"><a href="#cb113-2" aria-hidden="true" tabindex="-1"></a>T_YEYE_raw_length_comps <span class="ot">&lt;-</span> <span class="fu">get_raw_comps</span>(</span>
+<span id="cb113-3"><a href="#cb113-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> T_YEYE_bio,</span>
+<span id="cb113-4"><a href="#cb113-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">comp_bins =</span> <span class="fu">seq</span>(<span class="dv">10</span>, <span class="dv">74</span>, <span class="dv">2</span>),</span>
+<span id="cb113-5"><a href="#cb113-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">comp_column_name =</span> <span class="st">"Length_cm"</span>,</span>
+<span id="cb113-6"><a href="#cb113-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">two_sex_comps =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb113-7"><a href="#cb113-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">dir =</span> <span class="st">"Triennial/raw_length_comps/"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Sample size will be calculated based on stewart_hamel.
+The unique samples by tow for shelfrock is 2.43.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb115"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb115-1"><a href="#cb115-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_comps</span>(</span>
+<span id="cb115-2"><a href="#cb115-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> T_YEYE_raw_length_comps,</span>
+<span id="cb115-3"><a href="#cb115-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">dir =</span> <span class="st">"Triennial/raw_length_comps/"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: No shared levels found between `names(values)` of the manual scale and the
+data's fill values.</code></pre>
+</div>
+</div>
+</section>
+<section id="marginal-age-composition-data-1" class="level2">
+<h2 class="anchored" data-anchor-id="marginal-age-composition-data-1">Marginal Age Composition Data</h2>
+<p><em>get_expanded_comps()</em> calculates and formats the age-composition data for Stock Synthesis (SS). YEYE_age_comps calculates the age frequencies for use in SS and writes the files inside the ’forSS3” folder. The input sample size is calculated based on the Stewart and Hamel approach (e.g., unique samples calculated as a function of species type and tows).</p>
+<p>Can also calculate the raw or un-expanded composition data of age data using <em>get_raw_comps()</em>. This function returns a list of sexed and unsexed age composition data formatted for SS. The input sample size is set equal to the number of samples in the dataframe.</p>
+<p><em><strong>2017 Yelloweye Assessment:</strong> Age composition data were stratified into 66 bins, ranging between age 0 and age 65. Age data beyond age 65 comprise less than 5% of all age data available for the assessment.</em></p>
+<p><strong><em>NOTE: No age data from Triennial survey cannot calculate</em></strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb117"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb117-1"><a href="#cb117-1" aria-hidden="true" tabindex="-1"></a><span class="co"># #Calculate and format age composition data</span></span>
+<span id="cb117-2"><a href="#cb117-2" aria-hidden="true" tabindex="-1"></a><span class="co"># T_YEYE_age_comps &lt;- get_expanded_comps(</span></span>
+<span id="cb117-3"><a href="#cb117-3" aria-hidden="true" tabindex="-1"></a><span class="co">#     bio_data = T_YEYE_bio,</span></span>
+<span id="cb117-4"><a href="#cb117-4" aria-hidden="true" tabindex="-1"></a><span class="co">#     catch_data = T_YEYE_catch,</span></span>
+<span id="cb117-5"><a href="#cb117-5" aria-hidden="true" tabindex="-1"></a><span class="co">#     comp_bins = 0:65,</span></span>
+<span id="cb117-6"><a href="#cb117-6" aria-hidden="true" tabindex="-1"></a><span class="co">#     strata = triennial_strata,</span></span>
+<span id="cb117-7"><a href="#cb117-7" aria-hidden="true" tabindex="-1"></a><span class="co">#     comp_column_name = "age",</span></span>
+<span id="cb117-8"><a href="#cb117-8" aria-hidden="true" tabindex="-1"></a><span class="co">#     output = "full_expansion_ss3_format",</span></span>
+<span id="cb117-9"><a href="#cb117-9" aria-hidden="true" tabindex="-1"></a><span class="co">#     two_sex_comps = FALSE,</span></span>
+<span id="cb117-10"><a href="#cb117-10" aria-hidden="true" tabindex="-1"></a><span class="co">#     input_n_method = "stewart_hamel",</span></span>
+<span id="cb117-11"><a href="#cb117-11" aria-hidden="true" tabindex="-1"></a><span class="co">#     dir = "Triennial/age-comps/")</span></span>
+<span id="cb117-12"><a href="#cb117-12" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb117-13"><a href="#cb117-13" aria-hidden="true" tabindex="-1"></a><span class="co"># plot_comps(</span></span>
+<span id="cb117-14"><a href="#cb117-14" aria-hidden="true" tabindex="-1"></a><span class="co">#   data = T_YEYE_age_comps,</span></span>
+<span id="cb117-15"><a href="#cb117-15" aria-hidden="true" tabindex="-1"></a><span class="co">#   dir = "Triennial/age-comps/")</span></span>
+<span id="cb117-16"><a href="#cb117-16" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb117-17"><a href="#cb117-17" aria-hidden="true" tabindex="-1"></a><span class="co"># T_YEYE_raw_age_comps &lt;- get_raw_comps(</span></span>
+<span id="cb117-18"><a href="#cb117-18" aria-hidden="true" tabindex="-1"></a><span class="co">#     data = T_YEYE_bio,</span></span>
+<span id="cb117-19"><a href="#cb117-19" aria-hidden="true" tabindex="-1"></a><span class="co">#     comp_bins = 0:65,</span></span>
+<span id="cb117-20"><a href="#cb117-20" aria-hidden="true" tabindex="-1"></a><span class="co">#     comp_column_name = "age",</span></span>
+<span id="cb117-21"><a href="#cb117-21" aria-hidden="true" tabindex="-1"></a><span class="co">#     two_sex_comps = FALSE,</span></span>
+<span id="cb117-22"><a href="#cb117-22" aria-hidden="true" tabindex="-1"></a><span class="co">#     dir = "Triennial/raw-age-comps/")</span></span>
+<span id="cb117-23"><a href="#cb117-23" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb117-24"><a href="#cb117-24" aria-hidden="true" tabindex="-1"></a><span class="co"># plot_comps(</span></span>
+<span id="cb117-25"><a href="#cb117-25" aria-hidden="true" tabindex="-1"></a><span class="co">#   data = T_YEYE_raw_age_comps,</span></span>
+<span id="cb117-26"><a href="#cb117-26" aria-hidden="true" tabindex="-1"></a><span class="co">#   dir = "Triennial/raw-age-comps/")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="conditional-age-at-length-data-1" class="level2">
+<h2 class="anchored" data-anchor-id="conditional-age-at-length-data-1">Conditional-Age-at-Length Data</h2>
+<p>Calculate conditional-age-at-length data formated for SS. Creates un-expanded conditional-age-at-length data for each sex with input sample sizes based on the observed number of fish in each length bin by year. It returns a list of 3 dataframes: “female”, “male”, and “unsexed”.</p>
+<p><strong><em>NOTE: No age data from Triennial survey cannot calculate</em></strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb118"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb118-1"><a href="#cb118-1" aria-hidden="true" tabindex="-1"></a><span class="co"># caal &lt;- SurveyAgeAtLen.fn(</span></span>
+<span id="cb118-2"><a href="#cb118-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   datAL = YEYE_bio, </span></span>
+<span id="cb118-3"><a href="#cb118-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   datTows = YEYE_catch,</span></span>
+<span id="cb118-4"><a href="#cb118-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   strat.df = WCGBTS_strata,</span></span>
+<span id="cb118-5"><a href="#cb118-5" aria-hidden="true" tabindex="-1"></a><span class="co">#   lgthBins = seq(10, 74, 2), </span></span>
+<span id="cb118-6"><a href="#cb118-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   ageBins = 0:65,</span></span>
+<span id="cb118-7"><a href="#cb118-7" aria-hidden="true" tabindex="-1"></a><span class="co">#   dir = "WCGBTS/conditional-age-at-length/")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="maps-1" class="level2">
+<h2 class="anchored" data-anchor-id="maps-1">Maps</h2>
+<p>Map showing the distribution of density in aggregate and by year</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb119"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb119-1"><a href="#cb119-1" aria-hidden="true" tabindex="-1"></a><span class="fu">PlotMap.fn</span>(</span>
+<span id="cb119-2"><a href="#cb119-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">dat =</span> T_YEYE_catch,</span>
+<span id="cb119-3"><a href="#cb119-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">dir =</span> <span class="st">"Triennial/cpue-map/"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="nwfscSurvey-Package-Data-Extraction-Tutorial_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="960"></p>
+</div>
+<div class="cell-output-display">
+<p><img src="nwfscSurvey-Package-Data-Extraction-Tutorial_files/figure-html/unnamed-chunk-17-2.png" class="img-fluid" width="960"></p>
+</div>
+</div>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

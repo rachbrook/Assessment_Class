@@ -1,0 +1,267 @@
+---
+Y---
+title: "nwfscSurvey Package Data Extraction Tutorial"
+date: 1/24/2025
+format: html
+editor: visual
+---
+
+```{r}
+
+pak::pkg_install("pfmc-assessments/nwfscSurvey")
+library('dplyr')
+library('nwfscSurvey')
+
+```
+
+# NWFSC West Coast Groundfish Bottom Trawl Survey (WCGBTS) Data
+
+## Pull Survey Data
+
+Pull survey catch and biological data for Yelloweye Rockfish from NWFSC data warehouse for initial data visualization
+
+```{r, fig.width=10, fig.height=8}
+
+YEYE_catch <- pull_catch(
+  common_name = "yelloweye rockfish", # all lowercase 
+  survey = "NWFSC.Combo",
+  dir = "WCGBTS/YEYE-catch/")
+
+YEYE_bio = pull_bio(
+  common_name = "yelloweye rockfish", 
+  survey = "NWFSC.Combo",
+   dir = "WCGBTS/YEYE-bio/") 
+
+```
+
+## Initial Data Visualization
+
+There is a range of functions to create visualizations of the data by examining catch rates by latitude or depth, lengths or ages by latitude and depth, presence/absence in tows, and observed sex ratios.
+
+[**`plot_cpue()`**](https://pfmc-assessments.github.io/nwfscSurvey/reference/plot_cpue.html) **This function plots cpue and length by latitude and depth**
+
+[**`plot_bio_patterns()`**](https://pfmc-assessments.github.io/nwfscSurvey/reference/plot_bio_patterns.html)**This function plots length by latitude and depth**
+
+[**`wh_plot_proportion()`**](https://pfmc-assessments.github.io/nwfscSurvey/reference/wh_plot_proportion.html) **Save figures of proportions by depth and latitude using warehouse data**
+
+```{r, fig.width=10, fig.height=8}
+
+plot_cpue(
+  catch = YEYE_catch,
+  dir = "WCGBTS/exploratory-figures/")
+
+plot_bio_patterns(
+  bio = YEYE_bio, 
+  col_name = "Length_cm",
+  dir = "WCGBTS/exploratory-figures/")
+
+wh_plot_proportion(
+  data_catch = YEYE_catch,
+  data_bio = YEYE_bio,
+  dir = "WCGBTS/exploratory-figures/plots/")
+
+```
+
+## Index of Abundance - Define Strata
+
+Define the stratification by depth and latitude that will be used to calculate a design-based index of abundance. Depth and latitude strata are required to calculate a design-based index of abundance as well as length and age compositions. The strata should be specific to the range where the species in question has been observed. Note that the WCGBT Survey sampling design has changes in sampling intensity at 183 and 549 meters and north and south of 34.5 degrees latitude, so these should generally be included as strata breaks if the range spans these values (the survey extends southward to about 32 degrees and as deep as 1280 m):
+
+```{r}
+
+#Coastwide
+WCGBTS_strata <- CreateStrataDF.fn(
+  names = c("shallow_OR", "deep_OR", "shallow_WA", "deep_WA"),
+  depths.shallow = c( 55, 183, 55, 183),
+  depths.deep = c( 183, 350, 183, 350),
+  lats.south = c(42, 42, 46, 46),
+  lats.north = c( 46, 46, 49, 49)
+  )
+
+
+```
+
+## Design Based Index of Abundance
+
+Calculate the design based indexx of abundance. [`get_design_based()`](https://pfmc-assessments.github.io/nwfscSurvey/reference/get_design_based.html) returns a list with elements `$biomass_by_strata` and `$biomass`, where the second element is the design based index of abundance aggregated across strata. If the `dir` function input is specified, the function writes a csv file inside the dir input location to a "forSS3" folder.
+
+-   **(Plot 1)** Plot the coastwide design based index of abundance with uncertainty intervals
+
+-   **(Plot 2)** Plots the design based index of abundance for each strata without uncertainty intervals
+
+```{r}
+
+#Coastwide
+YEYE_biomass <- get_design_based(
+                  data = YEYE_catch,  
+                  strata = WCGBTS_strata)
+
+plot_index(
+  data = YEYE_biomass, 
+  plot = 1,
+  dir = "WCGBTS/exploratory-figures/")
+
+plot_index(
+  data = YEYE_biomass,
+  plot = 2,
+  dir = "WCGBTS/exploratory-figures/")
+
+```
+
+## Length Composition Data
+
+[`get_expanded_comps()`](https://pfmc-assessments.github.io/nwfscSurvey/reference/get_expanded_comps.html) calculates and formats the length-composition data for Stock Synthesis - distribution by year and length bin. YEYE_length_comps calculates the length frequencies for use in SS and writes the files inside the 'forSS3" folder. The input sample size is calculated based on the Stewart and Hamel approach (e.g., unique samples calculated as a function of species type and tows).
+
+Can also calculate the raw or un-expanded composition data of length data using *get_raw_comps()*. This function returns a list of sexed and unsexed length composition data formatted for SS. The input sample size is set equal to the number of samples in the dataframe.
+
+***2017 Yelloweye Assessment:** Length composition data were stratified into 33 2-cm bins, ranging between 10 and 74 cm.*
+
+```{r, fig.width=10, fig.height=8}
+
+#Calculate and format length composition data
+YEYE_length_comps <- get_expanded_comps(
+    bio_data = YEYE_bio,
+    catch_data = YEYE_catch,
+    comp_bins = seq(10, 74, 2),
+    strata = WCGBTS_strata,
+    comp_column_name = "Length_cm",
+    output = "full_expansion_ss3_format",
+    two_sex_comps = FALSE,
+    input_n_method = "stewart_hamel",
+    dir = "WCGBTS/length_comps/")
+
+plot_comps(
+  data = YEYE_length_comps,
+  dir = "WCGBTS/length_comps/")
+
+
+#Calculate raw and unexpanded length composition data
+YEYE_raw_length_comps <- get_raw_comps(
+    data = YEYE_bio,
+    comp_bins = seq(10, 74, 2),
+    comp_column_name = "Length_cm",
+    two_sex_comps = FALSE,
+    dir = "WCGBTS/raw_length_comps/")
+
+plot_comps(
+  data = YEYE_raw_length_comps,
+  dir = "WCGBTS/raw_length_comps/")
+
+```
+
+## Marginal Age Composition Data
+
+*get_expanded_comps()* calculates and formats the age-composition data for Stock Synthesis (SS). YEYE_age_comps calculates the age frequencies for use in SS and writes the files inside the 'forSS3" folder. The input sample size is calculated based on the Stewart and Hamel approach (e.g., unique samples calculated as a function of species type and tows).
+
+Can also calculate the raw or un-expanded composition data of age data using *get_raw_comps()*. This function returns a list of sexed and unsexed age composition data formatted for SS. The input sample size is set equal to the number of samples in the dataframe.
+
+***2017 Yelloweye Assessment:** Age composition data were stratified into 66 bins, ranging between age 0 and age 65. Age data beyond age 65 comprise less than 5% of all age data available for the assessment*
+
+```{r, fig.width=10, fig.height=8}
+
+#Calculate and format age composition data
+YEYE_age_comps <- get_expanded_comps(
+    bio_data = YEYE_bio,
+    catch_data = YEYE_catch,
+    comp_bins = 0:65,
+    strata = WCGBTS_strata,
+    comp_column_name = "age",
+    output = "full_expansion_ss3_format",
+    two_sex_comps = FALSE,
+    input_n_method = "stewart_hamel",
+    dir = "WCGBTS/age-comps/")
+
+plot_comps(
+  data = YEYE_age_comps,
+  dir = "WCGBTS/age-comps/")
+
+YEYE_raw_age_comps <- get_raw_comps(
+    data = YEYE_bio,
+    comp_bins = 0:65,
+    comp_column_name = "age",
+    two_sex_comps = FALSE,
+    dir = "WCGBTS/raw-age-comps/")
+
+plot_comps(
+  data = YEYE_raw_age_comps,
+  dir = "WCGBTS/raw-age-comps/")
+
+```
+
+## Conditional-Age-at-Length Data
+
+Calculate conditional-age-at-length data formated for SS. Creates un-expanded conditional-age-at-length data for each sex with input sample sizes based on the observed number of fish in each length bin by year. It returns a list of 3 dataframes: "female", "male", and "unsexed".
+
+```{r}
+
+caal <- SurveyAgeAtLen.fn(
+  datAL = YEYE_bio, 
+  datTows = YEYE_catch,
+  strat.df = WCGBTS_strata,
+  lgthBins = seq(10, 74, 2), 
+  ageBins = 0:65,
+  dir = "WCGBTS/conditional-age-at-length/")
+
+```
+
+## Maps
+
+Map showing the distribution of density in aggregate and by year
+
+```{r, fig.width=10, fig.height=8}
+
+library('maps')
+library('sf')
+
+PlotMap.fn(
+  dat = YEYE_catch,
+  dir = "WCGBTS/cpue-map/")
+
+```
+
+# Triennial Bottom Trawl Survey
+
+## Pull Survey Data
+
+Pull survey catch and biological data for Yelloweye Rockfish from NWFSC data warehouse for initial data visualization
+
+```{r}
+
+YEYE_catch_T = pull_catch(
+common_name = "yelloweye rockfish",
+survey = "Triennial",
+dir = "Triennial/YEYE-catch/")
+
+YEYE_bio_T = pull_bio(
+common_name = "yelloweye rockfish",
+survey = "Triennial",
+dir = "Triennial/YEYE-bio/")
+
+```
+
+## Initial Data Visualization
+
+There is a range of functions to create visualizations of the data by examining catch rates by latitude or depth, lengths or ages by latitude and depth, presence/absence in tows, and observed sex ratios.
+
+[**`plot_cpue()`**](https://pfmc-assessments.github.io/nwfscSurvey/reference/plot_cpue.html) **This function plots cpue and length by latitude and depth**
+
+[**`plot_bio_patterns()`**](https://pfmc-assessments.github.io/nwfscSurvey/reference/plot_bio_patterns.html)**This function plots length by latitude and depth**
+
+[**`wh_plot_proportion()`**](https://pfmc-assessments.github.io/nwfscSurvey/reference/wh_plot_proportion.html) **Save figures of proportions by depth and latitude using warehouse data**
+
+```{r, fig.width=10, fig.height=8}
+
+plot_cpue(
+  catch = YEYE_catch_T,
+  dir = "Triennial/exploratory-figures/")
+
+plot_bio_patterns(
+  bio = YEYE_bio_T, 
+  col_name = "Length_cm",
+  dir = "Triennial/exploratory-figures/")
+
+wh_plot_proportion(
+  data_catch = YEYE_catch_T,
+  data_bio = YEYE_bio_T,
+  dir = "WCGBTS/exploratory-figures/")
+
+```
