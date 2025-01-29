@@ -89,17 +89,18 @@ Calculate the design based indexx of abundance. [`get_design_based()`](https://p
 
 YEYE_biomass <- get_design_based(
                   data = YEYE_catch,  
-                  strata = WCGBTS_strata)
+                  strata = WCGBTS_strata, 
+                  dir = "WCGBTS/design-based-index-abundance/")
 
 plot_index(
   data = YEYE_biomass, 
   plot = 1,
-  dir = "WCGBTS/exploratory-figures/")
+  dir = "WCGBTS/design-based-index-abundance/")
 
 plot_index(
   data = YEYE_biomass,
   plot = 2,
-  dir = "WCGBTS/exploratory-figures/")
+  dir = "WCGBTS/design-based-index-abundance/")
 
 ```
 
@@ -119,7 +120,7 @@ YEYE_length_comps <- get_expanded_comps(
     catch_data = YEYE_catch,
     comp_bins = seq(10, 74, 2),
     strata = WCGBTS_strata,
-    comp_column_name = "Length_cm",
+    comp_column_name = "length_cm",
     output = "full_expansion_ss3_format",
     two_sex_comps = FALSE,
     input_n_method = "stewart_hamel",
@@ -134,7 +135,7 @@ plot_comps(
 YEYE_raw_length_comps <- get_raw_comps(
     data = YEYE_bio,
     comp_bins = seq(10, 74, 2),
-    comp_column_name = "Length_cm",
+    comp_column_name = "length_cm",
     two_sex_comps = FALSE,
     dir = "WCGBTS/raw_length_comps/")
 
@@ -232,8 +233,7 @@ common_name = "yelloweye rockfish",
 survey = "Triennial",
 dir = "Triennial/YEYE-bio/")
 
-bioTtest <- T_YEYE_bio$age_data #this is the same number of variables as bio from the WCGBTS
-T_YEYE_bio <- bioTtest
+T_YEYE_bio <- T_YEYE_bio$length_data #Use length data - Ian Taylor
 
 
 ```
@@ -282,7 +282,7 @@ lats.north = c(46, 49))
 
 ## Design Based Index of Abundance
 
-Calculate the design based indexx of abundance. [`get_design_based()`](https://pfmc-assessments.github.io/nwfscSurvey/reference/get_design_based.html) returns a list with elements `$biomass_by_strata` and `$biomass`, where the second element is the design based index of abundance aggregated across strata. If the `dir` function input is specified, the function writes a csv file inside the dir input location to a "forSS3" folder.
+Calculate the design based index of abundance. [`get_design_based()`](https://pfmc-assessments.github.io/nwfscSurvey/reference/get_design_based.html) returns a list with elements `$biomass_by_strata` and `$biomass`, where the second element is the design based index of abundance aggregated across strata. If the `dir` function input is specified, the function writes a csv file inside the dir input location to a "forSS3" folder.
 
 -   **(Plot 1)** Plot the coastwide design based index of abundance with uncertainty intervals
 
@@ -292,17 +292,18 @@ Calculate the design based indexx of abundance. [`get_design_based()`](https://p
 
 T_YEYE_biomass <- get_design_based(
                   data = T_YEYE_catch,  
-                  strata = triennial_strata)
+                  strata = triennial_strata,
+                  dir = "Triennial/design-based-index-abundance/")
 
 plot_index(
   data = T_YEYE_biomass, 
   plot = 1,
-  dir = "Triennial/exploratory-figures/")
+  dir = "Triennial/design-based-index-abundance/")
 
 plot_index(
   data = T_YEYE_biomass,
   plot = 2,
-  dir = "Triennial/exploratory-figures/")
+  dir = "Triennial/design-based-index-abundance/")
 
 ```
 
@@ -415,5 +416,42 @@ Map showing the distribution of density in aggregate and by year
 PlotMap.fn(
   dat = T_YEYE_catch,
   dir = "Triennial/cpue-map/")
+
+```
+
+## Weight-Length Relationship
+
+Use NWFSC WCGBTS data
+
+```{r, fig.width=10, fig.height=8}
+
+YEYE_wt_length <- estimate_weight_length(
+  data = YEYE_bio,
+  col_length = "length_cm",
+  col_weight = "weight_kg",
+  verbose = FALSE
+)
+
+
+YEYE_wt_length_sexed_plot <- plot_weight_length(
+                         data = YEYE_bio,
+                         estimates = YEYE_wt_length,
+                         col_length = "length_cm",
+                         col_weight = "weight_kg",
+                         two_sex = TRUE,
+                         add_save_name = "sexed",
+                         dir = "Triennial/weight-length-relationship/"
+                        )
+
+YEYE_wt_length_unsexed_plot <- plot_weight_length(
+                         data = YEYE_bio,
+                         estimates = YEYE_wt_length,
+                         col_length = "length_cm",
+                         col_weight = "weight_kg",
+                         two_sex = FALSE,
+                         add_save_name = "unsexed",
+                         dir = "Triennial/weight-length-relationship/"
+                        )
+
 
 ```
